@@ -3,7 +3,8 @@
 
 #include <iostream>
 
-static void print_ints(const int as[], const unsigned int n) {
+static void print_ints(const int as[], const unsigned int n)
+{
   const char* sep = "";
   for (unsigned int i = 0; i < n; ++i) {
     std::cout << sep << as[i];
@@ -12,7 +13,8 @@ static void print_ints(const int as[], const unsigned int n) {
   std::cout << std::endl;
 }
 
-static void insert(int as[], const unsigned int i) {
+static void insert(int as[], const unsigned int i)
+{
   // as[0..i-1] is sorted
   const auto asi = as[i];
   auto j = i;
@@ -23,14 +25,16 @@ static void insert(int as[], const unsigned int i) {
   as[j] = asi;
 }
 
-static void insertion_sort(int as[], const unsigned int n) {
+static void insertion_sort(int as[], const unsigned int n)
+{
   for (auto i = 1u; i < n; ++i) {
     print_ints(as, n);
     insert(as, i);
   }
 }
 
-int main(void) {
+int main()
+{
   unsigned int n;
   std::cin >> n;
   int as[n];
@@ -40,8 +44,6 @@ int main(void) {
 
   insertion_sort(as, n);
   print_ints(as, n);
-
-  return 0;
 }
 
 // eof
