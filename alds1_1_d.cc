@@ -22,7 +22,7 @@ static int max_profit(int const rs[], const unsigned int n)
   return max_p;
 }
 
-int main(void)
+int main()
 {
   unsigned int n;
   std::cin >> n;
