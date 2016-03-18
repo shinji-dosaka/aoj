@@ -2,7 +2,7 @@
 // ALDS1_1-D: Maximum Profit
 
 #include <algorithm>
-#include <iostream>
+#include <cstdio>
 
 static int max_profit(int const rs[], const unsigned int n)
 {
@@ -25,14 +25,14 @@ static int max_profit(int const rs[], const unsigned int n)
 int main()
 {
   unsigned int n;
-  std::cin >> n;
+  std::scanf("%d", &n);
   int rs[n];
   for (unsigned int i = 0; i < n; ++i) {
-    std::cin >> rs[i];
+    std::scanf("%d", &rs[i]);
   }
 
   const int max_p = max_profit(rs, n);
-  std::cout << max_p << std::endl;
+  std::printf("%d\n", max_p);
 }
 
 // eof
