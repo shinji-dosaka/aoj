@@ -2,21 +2,21 @@
 // ALDS1_2-D: Shell Sort
 
 #include <algorithm>
-#include <iostream>
+#include <cstdio>
 
 static void print_ints(const int as[], const unsigned int n, const char* sep = " ")
 {
   auto out_sep = "";
   for (auto i = 0u; i < n; ++i) {
-    std::cout << out_sep << as[i];
+    std::printf("%s%u", out_sep, as[i]);
     out_sep = sep;
   }
-  std::cout << std::endl;
+  std::printf("\n");
 }
 
 static void print_int(const unsigned int n)
 {
-  std::cout << n << std::endl;
+  std::printf("%u\n", n);
 }
 
 static unsigned int cnt = 0u;
@@ -76,10 +76,10 @@ static void shell_sort(int as[], const unsigned int n)
 int main()
 {
   unsigned int n;
-  std::cin >> n;
+  std::scanf("%u", &n);
   int as[n];
   for (auto i = 0u; i < n; ++i) {
-    std::cin >> as[i];
+    std::scanf("%d", &as[i]);
   }
 
   shell_sort(as, n);
