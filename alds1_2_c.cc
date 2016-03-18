@@ -31,6 +31,22 @@ static void print_cards(const Card cards[], const unsigned int n)
   std::cout << std::endl;
 }
 
+static void copy_cards(Card card2[], const Card card1[], const unsigned int n)
+{
+  std::memcpy(card2, card1, sizeof(card2[0])*n);
+}
+
+static bool is_equal_cards(const Card cards1[], const Card cards2[], const unsigned int n)
+{
+  for (auto i = 0u; i < n; ++i) {
+    if (cards1[i].rank != cards2[i].rank ||
+        cards1[i].suit != cards2[i].suit) {
+      return false;
+    }
+  }
+  return true;
+}
+
 static void bubble_sort(Card cards[], const unsigned int n)
 {
   for (auto j = 0u; j < n-1; ++j) {
@@ -65,7 +81,7 @@ int main()
   for (auto i = 0u; i < n; ++i) {
     std::cin >> cards1[i];
   }
-  std::memcpy(cards2, cards1, sizeof(cards1));
+  copy_cards(cards2, cards1, n);
 
   bubble_sort(cards1, n);
   print_cards(cards1, n);
@@ -73,7 +89,8 @@ int main()
 
   selection_sort(cards2, n);
   print_cards(cards2, n);
-  if (std::memcmp(cards1, cards2, sizeof(cards1)) == 0) {
+
+  if (is_equal_cards(cards1, cards2, n)) {
     std::cout << "Stable" << std::endl;
   } else {
     std::cout << "Not stable" << std::endl;
