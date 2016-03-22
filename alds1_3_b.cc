@@ -60,7 +60,7 @@ int main()
 
   Process processes[n];
   Queue<Process*> process_queue(n);
-  for (auto i = 0U; i < n; ++i) {
+  for (auto i = 0u; i < n; ++i) {
     std::scanf("%10s %d", processes[i].name_, &processes[i].time_);
     process_queue.enqueue(&processes[i]);
   }
