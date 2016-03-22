@@ -77,7 +77,7 @@ int main()
   std::scanf("%d", &n);
   DoublyLinkedList<int> list;
 
-  for (auto i = 0U; i < n; ++i) {
+  for (auto i = 0u; i < n; ++i) {
     char buf[11+1]; // max_length == "deleteFirst".size()+1('\0')
     int x;
     std::scanf("%11s", buf);
