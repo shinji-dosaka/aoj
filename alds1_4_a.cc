@@ -32,7 +32,7 @@ int main()
     if (j != n) ++c;
   }
 
-  std::printf("%d\n", c);
+  std::printf("%u\n", c);
 }
 
 // eof
