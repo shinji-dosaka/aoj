@@ -2,7 +2,7 @@
 // ALDS1_4-D: Allocation
 
 #include <algorithm>
-#include <iostream>
+#include <cstdio>
 #include <utility>
 #include <vector>
 using namespace std;
@@ -56,15 +56,15 @@ static uint min_load_capacity(uint num, const vector<uint>& ws)
 int main()
 {
   uint n, k;
-  cin >> n >> k;
+  scanf("%u %u", &n, &k);
 
   vector<uint> ws(n);
   for (auto i = 0u; i < n; ++i) {
-    cin >> ws[i];
+    scanf("%u", &ws[i]);
   }
 
   auto c = min_load_capacity(k, ws);
-  cout << c << endl;
+  printf("%u\n", c);
 }
 
 // eof
