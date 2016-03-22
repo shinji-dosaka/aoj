@@ -3,22 +3,11 @@
 
 #include <algorithm>
 #include <cstdio>
-#include <utility>
+#include <numeric>
 #include <vector>
 using namespace std;
 
 using uint = unsigned int;
-
-static pair<uint, uint> sum_max(const vector<uint>& ws)
-{
-  auto ws_sum = 0u;
-  auto max_w = 0u;
-  for (auto w : ws) {
-    ws_sum += w;
-    max_w = max(max_w, w);
-  }
-  return make_pair(ws_sum, max_w);
-}
 
 static bool is_loaded(uint max_load, uint num, const vector<uint>& ws)
 {
@@ -36,9 +25,8 @@ static bool is_loaded(uint max_load, uint num, const vector<uint>& ws)
 
 static uint min_load_capacity(uint num, const vector<uint>& ws)
 {
-  const auto sum_max_ws = sum_max(ws);
-  const auto ws_sum = sum_max_ws.first; // accumulate(ws.begin(), ws.end(), 0);
-  const auto max_w = sum_max_ws.second; // max_element(ws.begin(), ws.end());
+  const auto ws_sum = accumulate(ws.begin(), ws.end(), 0u);
+  const auto max_w = *max_element(ws.begin(), ws.end());
 
   auto left = max(max_w, (ws_sum-1)/num+1);
   auto right = ws_sum;
