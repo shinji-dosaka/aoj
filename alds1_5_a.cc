@@ -2,12 +2,13 @@
 // ALDS1_5-A: Exhaustive Search
 
 #include <cstdio>
+#include <numeric>
 
 static bool solve(const int m, const int as[], const unsigned int n)
 {
   if (m == 0) {
     return true;
-  } else if (m < 0 || n == 0) {
+  } else if (n == 0 || m < 0 || m > std::accumulate(as, as+n, 0)) {
     return false;
   } else {
     return solve(m-as[0], as+1, n-1) || solve(m, as+1, n-1);
