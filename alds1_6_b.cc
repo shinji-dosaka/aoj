@@ -20,15 +20,14 @@ static void print_partition_ints(const int as[], const uint q, const uint n)
 static uint partition(int as[], const uint first, const uint last)
 {
   // as[last] is pivot
-  auto less = first; // next index for smaller element
+  auto gt = first;
   for (auto i = first; i < last; ++i) {
     if (as[i] <= as[last]) {
-      std::swap(as[less], as[i]);
-      ++less;
+      std::swap(as[gt++], as[i]);
     }
   }
-  std::swap(as[less], as[last]);
-  return less;
+  std::swap(as[gt], as[last]);
+  return gt;
 }
 
 int main()
