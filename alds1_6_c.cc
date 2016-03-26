@@ -7,7 +7,6 @@
 
 using uint = unsigned int;
 
-// Card
 struct Card {
   char suit;
   uint rank;
@@ -42,30 +41,30 @@ static bool is_stable(const Card cards[], const uint n)
   return true;
 }
 
-// quick_sort
-static uint partition(Card cards[], uint begin, uint end) {
+static uint partition(Card cards[], uint begin, uint end)
+{
   auto last = end-1;
-  auto lt = begin;
+  auto gt = begin;
   for (auto i = begin; i < last; ++i) {
     if (cards[i].rank <= cards[last].rank) {
-      std::swap(cards[lt], cards[i]);
-      ++lt;
+      std::swap(cards[gt++], cards[i]);
     }
   }
-  std::swap(cards[lt], cards[last]);
-  return lt;
+  std::swap(cards[gt], cards[last]);
+  return gt;
 }
 
-void quick_sort(Card cards[], uint begin, uint end) {
+static void quick_sort(Card cards[], uint begin, uint end)
+{
   if (end - begin > 1) {
     auto middle = partition(cards, begin, end);
     quick_sort(cards, begin, middle);
-    quick_sort(cards, middle, end);
+    quick_sort(cards, middle+1, end);
   }
 }
 
-// main
-int main(void) {
+int main()
+{
   uint n;
   std::cin >> n;
   Card cards[n];
@@ -76,14 +75,8 @@ int main(void) {
 
   quick_sort(cards, 0u, n);
 
-  if (is_stable(cards, n)) {
-    std::cout << "Stable" << std::endl;
-  } else {
-    std::cout << "Not stable" << std::endl;
-  }
+  std::cout << (is_stable(cards, n) ? "Stable" : "Not stable") << std::endl;
   print_cards(cards, n);
-
-  return 0;
 }
 
 // eof
