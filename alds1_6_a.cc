@@ -13,7 +13,7 @@ static void print_ints(const int as[], const unsigned int n)
   std::printf("\n");
 }
 
-static const unsigned int MAX_VALUE= 10000;
+static const unsigned int MAX_VALUE= 10000u;
 static void counting_sort(int as[], int bs[], const unsigned int n)
 {
   int cs[MAX_VALUE+1] ={0};
