@@ -2,8 +2,7 @@
 // ALDS1_6-C: Quick Sort
 
 #include <algorithm>
-#include <cstring>
-#include <iostream>
+#include <cstdio>
 
 using uint = unsigned int;
 
@@ -11,22 +10,24 @@ struct Card {
   char suit;
   uint rank;
   uint index; // for stable check
+
+  void set(char s, uint r, uint i)
+  {
+    suit = s;
+    rank = r;
+    index = i;
+  }
+
+  void print() const
+  {
+    std::printf("%c %u\n", suit, rank);
+  }
 };
-
-std::ostream& operator<<(std::ostream& os, const Card& card)
-{
-  return os << card.suit << " " << card.rank;
-}
-
-std::istream& operator>>(std::istream& is, Card& card)
-{
-  return is >> card.suit >> card.rank;
-}
 
 static void print_cards(const Card cards[], const uint n)
 {
   for (auto i = 0u; i < n; ++i) {
-    std::cout << cards[i] << std::endl;
+    cards[i].print();
   }
 }
 
@@ -66,16 +67,18 @@ static void quick_sort(Card cards[], uint begin, uint end)
 int main()
 {
   uint n;
-  std::cin >> n;
+  std::scanf("%u", &n);
   Card cards[n];
   for (uint i = 0; i < n; ++i) {
-    cards[i].index = i;
-    std::cin >> cards[i];
+    char s;
+    uint r;
+    std::scanf(" %c %u", &s, &r); // skip space
+    cards[i].set(s, r, i);
   }
 
   quick_sort(cards, 0u, n);
 
-  std::cout << (is_stable(cards, n) ? "Stable" : "Not stable") << std::endl;
+  std::puts(is_stable(cards, n) ? "Stable" : "Not stable");
   print_cards(cards, n);
 }
 
