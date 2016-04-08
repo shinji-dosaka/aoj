@@ -3,18 +3,20 @@
 
 #include <cstdio>
 
+const int NIL = -1;
+
 struct Node {
   // id is index of nodes
-  int parent = -1;
-  int left_child = -1;
-  int right_sibling = -1;
-  unsigned int depth = 0;
+  int parent = NIL;
+  int left_child = NIL;
+  int right_sibling = NIL;
+  unsigned int depth = 0u;
 
   const char* type() const
   {
     auto type =
-      parent == -1 ? "root" :
-      left_child == -1 ? "leaf" :
+      parent == NIL ? "root" :
+      left_child == NIL ? "leaf" :
       "internal node";
     return type;
   }    
@@ -39,40 +41,45 @@ public:
   void print_nodes() const
   {
     for (auto i = 0u; i < n_; ++i) {
-      auto node = nodes_[i];
-      std::printf("node %u: parent = %d, depth = %u, ", i, node.parent, node.depth);
-      std::printf("%s, [", node.type());
-      int next_c = node.left_child;
-      auto sep = "";
-      while (next_c != -1) {
-        std::printf("%s%d", sep, next_c);
-        sep = ", ";
-        next_c = nodes_[next_c].right_sibling;
-      }
-      std::printf("]\n");
+      print_node(i);
     }
   }
 
 private:
-  unsigned int root() const
+  int root() const
   {
     for (auto i = 0u; i < n_; ++i) {
-      if (nodes_[i].parent == -1) {
+      if (nodes_[i].parent == NIL) {
         return i;
       }
     }
-    return -1;
+    return NIL;
   }
 
   void set_depth_internal(unsigned int i, unsigned int depth)
   {
     nodes_[i].depth = depth;
-    if (nodes_[i].right_sibling != -1) {
+    if (nodes_[i].right_sibling != NIL) {
       set_depth_internal(nodes_[i].right_sibling, depth);
     }
-    if (nodes_[i].left_child != -1) {
+    if (nodes_[i].left_child != NIL) {
       set_depth_internal(nodes_[i].left_child, depth+1);
     }
+  }
+
+  void print_node(unsigned int i) const
+  {
+    auto node = nodes_[i];
+    std::printf("node %u: parent = %d, depth = %u, ", i, node.parent, node.depth);
+    std::printf("%s, [", node.type());
+    int next_c = node.left_child;
+    auto sep = "";
+    while (next_c != NIL) {
+      std::printf("%s%d", sep, next_c);
+      sep = ", ";
+      next_c = nodes_[next_c].right_sibling;
+    }
+    std::printf("]\n");
   }
 };
 
