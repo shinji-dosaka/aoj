@@ -2,21 +2,24 @@
 // ALDS1_7_D: Reconstruction of a Tree
 
 #include <cstdio>
-using uint = unsigned int;
 
-static void solve(const uint preorders[], const uint inorders[], const uint indices[],
-                  const uint p_index, const uint i_begin, const uint i_end)
+using uint = unsigned int;
+using uintp = uint*;
+
+static void solve(const uintp i_begin, const uintp i_end,
+                  const uintp p_begin, const uintp indices[],
+                  const char* sep = "\n")
 {
   if (i_begin >= i_end) {
     return;
   }
-  const auto root = preorders[p_index];
-  const auto i_index = indices[root];
-  const auto len = i_index - i_begin;
-  solve(preorders, inorders, indices, (p_index+1), i_begin, i_index);
-  solve(preorders, inorders, indices, (p_index+len+1), (i_index+1), i_end);
-  std::printf("%u", root);
-  std::printf("%s", (p_index == 0) ? "\n" : " ");
+  const auto i_index = indices[*p_begin];
+  const auto len = i_index-i_begin;
+  auto i_begin1 = i_begin,   i_end1 = i_index, p_begin1 = p_begin+1;
+  auto i_begin2 = i_index+1, i_end2 = i_end,   p_begin2 = p_begin+1+len;
+  solve(i_begin1, i_end1, p_begin1, indices, " ");
+  solve(i_begin2, i_end2, p_begin2, indices, " ");
+  std::printf("%u%s", *i_index, sep);
 }
 
 int main()
@@ -25,7 +28,7 @@ int main()
   std::scanf("%u", &n);
   uint preorders[n];
   uint inorders[n];
-  uint indices[n+1]; // 0 not used.
+  uintp indices[n+1]; // 0 not used.
   uint k;
   for (auto i = 0u; i < n; ++i) {
     std::scanf("%u", &k);
@@ -34,10 +37,10 @@ int main()
   for (auto i = 0u; i < n; ++i) {
     std::scanf("%u", &k);
     inorders[i] = k;
-    indices[k] = i;
+    indices[k] = &(inorders[i]);
   }
 
-  solve(preorders, inorders, indices, 0, 0, n);
+  solve(inorders, inorders+n, preorders, indices);
 }
 
 // eof
