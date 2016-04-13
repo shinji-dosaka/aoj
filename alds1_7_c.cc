@@ -25,21 +25,21 @@ public:
 
   Node& operator[](unsigned int id) { return nodes_[id]; }
 
-  void pre_order() const
+  void preorder() const
   {
     std::printf("Preorder\n");
     pre_parse(root());
     std::printf("\n");
   }
 
-  void in_order() const
+  void inorder() const
   {
     std::printf("Inorder\n");
     in_parse(root());
     std::printf("\n");
   }
 
-  void post_order() const
+  void postorder() const
   {
     std::printf("Postorder\n");
     post_parse(root());
@@ -118,9 +118,9 @@ int main()
     }
   }
 
-  tree.pre_order();
-  tree.in_order();
-  tree.post_order();
+  tree.preorder();
+  tree.inorder();
+  tree.postorder();
 }
 
 // eof
