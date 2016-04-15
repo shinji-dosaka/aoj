@@ -68,15 +68,17 @@ public:
   }
 
 private:
-  Node* detach_leftmost_node(Node* node) const
+  Node* detach_leftmost_node(Node* right)
   {
-    if (node->left) {
-      do {
-        node = node->left;
-      } while (node->left);
-      node->parent->left = node->right;
+    if (right->left == nullptr) {
+      return right;
     }
-    node->parent = nullptr;
+    auto node = right->left;
+    while (node->left) {
+      node = node->left;
+    }
+    node->parent->left = node->right;
+    node->right = right;
     return node;
   }
 
@@ -85,11 +87,8 @@ private:
     Node* replace_node;
     if (node->left && node->right) {
       replace_node = detach_leftmost_node(node->right);
-      replace_node->parent = node->parent;
       replace_node->left = node->left;
-      if (replace_node != node->right) {
-        replace_node->right = node->right;
-      }
+      replace_node->parent = node->parent;
     } else if (node->left) {
       replace_node = node->left;
       replace_node->parent = node->parent;
@@ -99,11 +98,11 @@ private:
     } else { // has no leaves
       replace_node = nullptr;
     }
-    if (!node->parent) {
+    if (node->parent == nullptr) {
       root_ = replace_node;
     } else if (node->parent->left == node) {
       node->parent->left = replace_node;
-    } else { // node->parent->right == node
+    } else {
       node->parent->right = replace_node;
     }
     return node;
