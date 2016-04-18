@@ -33,20 +33,17 @@ public:
 private:
   void max_heapify(int i)
   {
-    auto left = 2*i + 1;
-    auto right = 2*i + 2;
-    auto max = i;
-    if (left < n_ && data_[max] < data_[left]) {
-      max = left;
+    while (i < n_/2) {
+      auto c = 2*i + 1; // left
+      if (c+1 < n_ && data_[c] < data_[c+1]) {
+        ++c; // right
+      }
+      if (data_[c] < data_[i]) {
+        return;
+      }
+      std::swap(data_[c], data_[i]);
+      i = c;
     }
-    if (right < n_ && data_[max] < data_[right]) {
-      max = right;
-    }
-    if (max == i) {
-     return;
-   }
-   std::swap(data_[i], data_[max]);
-   max_heapify(max);
   }
 };
 
