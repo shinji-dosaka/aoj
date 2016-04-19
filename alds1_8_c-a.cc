@@ -75,6 +75,25 @@ private:
     }
   }
 
+  Node* detach_node(Node* node)
+  {
+    Node* replace_node;
+    if (node->left == nullptr && node->right == nullptr) {
+      replace_node = nullptr;
+    } else {
+      if (node->right == nullptr) {
+        replace_node = node->left;
+      } else if (node->left == nullptr) {
+        replace_node = node->right;
+      } else {
+        replace_node = leftmost_node_to_top(node->right);
+        replace_node->left = node->left;
+      }
+      replace_node->parent = node->parent;
+    }
+    return replace_node;
+  }
+  
   Node* delete_tree(Node* node, int key)
   {
     if (node == nullptr) {
@@ -84,20 +103,7 @@ private:
     } else if (node->key < key) {
       node->right = delete_tree(node->right, key);
     } else { // delete this node!
-      Node* replace_node;
-      if (node->left == nullptr && node->right == nullptr) {
-        replace_node = nullptr;
-      } else {
-        if (node->right == nullptr) {
-          replace_node = node->left;
-        } else if (node->left == nullptr) {
-          replace_node = node->right;
-        } else {
-          replace_node = leftmost_node_to_top(node->right);
-          replace_node->left = node->left;
-        }
-        replace_node->parent = node->parent;
-      }
+      Node* replace_node = detach_node(node);
       delete node;
       node = replace_node;
     }

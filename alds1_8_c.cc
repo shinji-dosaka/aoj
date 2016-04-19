@@ -20,43 +20,27 @@ class BinaryTree {
 public:
   void insert_node(const int key)
   {
-    Node** node_p = &root_;
-    Node* parent = nullptr;
-    while (*node_p) {
-      parent = *node_p;
-      if ((*node_p)->key > key) {
-        node_p = &(*node_p)->left;
-      } else if ((*node_p)->key < key) {
-        node_p = &(*node_p)->right;
-      } else {
-        assert(!"duplicate key?");
-      }
-    }
-    (*node_p) = new Node(key, parent);
+    Node* parent;
+    auto node_p = find_node_p(key, &parent);
+    assert(*node_p == nullptr); // not duplicate key
+    *node_p = new Node(key, parent);
   }
 
-  Node* find_node(const int key) const
+  Node* find_node(const int key)
   {
-    Node* node = root_;
-    while (node) {
-      if (node->key > key) {
-        node = node->left;
-      } else if (node->key < key) {
-        node = node->right;
-      } else { // found
-        break;
-      }
-    }
-    return node;
+    auto node_p = find_node_p(key);
+    return *node_p;
   }
 
   void delete_node(const int key)
   {
-    auto node = find_node(key);
-    if (node) {
-      node = detach_node(node);
-      delete node;
+    auto node_p = find_node_p(key);
+    if (*node_p == nullptr) {
+      return;
     }
+    auto* replace_node = detach_node(*node_p);
+    delete *node_p;
+    *node_p = replace_node;
   }
 
   void print_nodes() const
@@ -68,7 +52,27 @@ public:
   }
 
 private:
-  Node* detach_leftmost_node(Node* right)
+  Node** find_node_p(const int key, Node** parent_p = nullptr)
+  {
+    Node** node_p = &root_;
+    Node* parent = nullptr;
+    while (*node_p) {
+      parent = *node_p;
+      if (key < (*node_p)->key) {
+        node_p = &(*node_p)->left;
+      } else if ((*node_p)->key < key) {
+        node_p = &(*node_p)->right;
+      } else { // found
+        break;
+      }
+    }
+    if (parent_p) {
+      *parent_p = parent;
+    }
+    return node_p;
+  }
+
+  Node* leftmost_node_to_top(Node* right)
   {
     if (right->left == nullptr) {
       return right;
@@ -85,27 +89,20 @@ private:
   Node* detach_node(Node* node)
   {
     Node* replace_node;
-    if (node->left && node->right) {
-      replace_node = detach_leftmost_node(node->right);
-      replace_node->left = node->left;
-      replace_node->parent = node->parent;
-    } else if (node->left) {
-      replace_node = node->left;
-      replace_node->parent = node->parent;
-    } else if (node->right) {
-      replace_node = node->right;
-      replace_node->parent = node->parent;
-    } else { // has no leaves
+    if (node->left == nullptr && node->right == nullptr) {
       replace_node = nullptr;
-    }
-    if (node->parent == nullptr) {
-      root_ = replace_node;
-    } else if (node->parent->left == node) {
-      node->parent->left = replace_node;
     } else {
-      node->parent->right = replace_node;
+      if (node->right == nullptr) {
+        replace_node = node->left;
+      } else if (node->left == nullptr) {
+        replace_node = node->right;
+      } else {
+        replace_node = leftmost_node_to_top(node->right);
+        replace_node->left = node->left;
+      }
+      replace_node->parent = node->parent;
     }
-    return node;
+    return replace_node;
   }
 
   void print_in_order(const Node* node) const
