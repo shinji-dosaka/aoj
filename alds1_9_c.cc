@@ -37,7 +37,7 @@ private:
     }
   }
 
-  void downto(int k)
+  void downto(int k) // same as max_heapify(in ALDS1_9_B)
   {
     const auto n = static_cast<int>(v_.size());
     while (k < n/2) {
