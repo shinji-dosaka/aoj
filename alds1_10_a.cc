@@ -17,7 +17,7 @@ public:
   {
     f_ = new unsigned long[n_+1];
     f_[0] = f_[1] = 1;
-    for (auto i = 2u; i <= n; ++i) {
+    for (auto i = 2u; i <= n_; ++i) {
       f_[i] = f_[i-1] + f_[i-2];
     }
   }
