@@ -2,16 +2,17 @@
 // ALDS1_11_D: Connected Components
 
 #include <algorithm>
-#include <climits>
 #include <cstdio>
+#include <stack>
 #include <vector>
 
 using uint = unsigned int;
 
 class Graph {
   std::vector<std::vector<uint>> g_;
-  std::vector<uint> root_;
-  
+  std::vector<int> root_;
+  enum { NIL = -1, IN_STACK= -2 };
+
 public:
   Graph(uint n)
   {
@@ -27,9 +28,11 @@ public:
 
   void setup()
   {
-    std::fill(root_.begin(), root_.end(), UINT_MAX);
+    std::fill(root_.begin(), root_.end(), NIL);
     for (auto i = 0u; i < g_.size(); ++i ) {
-      dfs(i, i);
+      if (root_[i] == NIL) {
+        dfs(i);
+      }
     }
   }
 
@@ -39,15 +42,22 @@ public:
   }
 
 private:
-  void dfs(uint i, uint root)
+  void dfs(uint root)
   {
-    if (root_[i] != UINT_MAX) return;
-    root_[i] = root;
-    for (auto j = 0u; j < g_[i].size(); ++j) {
-      dfs(g_[i][j], root);
+    std::stack<uint> s;
+    s.push(root);
+    while (!s.empty()) {
+      auto i = s.top();
+      s.pop();
+      root_[i] = root;
+      for (auto j : g_[i]) {
+        if (root_[j] == NIL) {
+          root_[j] = IN_STACK;
+          s.push(j);
+        }
+      }
     }
   }
-  
 };
 
 int main()
