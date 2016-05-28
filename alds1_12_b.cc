@@ -53,12 +53,12 @@ int main()
 
   Graph g(n);
 
-  uint u, k, c, v;
+  uint u, k, v, c;
   for (auto i = 0u; i < n; ++i) {
     std::scanf("%u %u", &u, &k);
     for (auto j = 0u; j < k; ++j) {
-      std::scanf("%u %u", &c, &v);
-      g[u][c] = v;
+      std::scanf("%u %u", &v, &c);
+      g[u][v] = c;
     }
   }
 
